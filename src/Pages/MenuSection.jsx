@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-const MenuSection = () => {
+const MenuSection = ({sectionType}) => {
 
     useEffect(() => {
         window.scrollTo(0,0)
