@@ -1,32 +1,36 @@
 import React from "react";
-import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { CURR_LOCATION } from "../../data";
 
-// Map container style
 const containerStyle = {
   width: "100%",
   height: "200px",
   borderRadius: "5px"
 };
 
-// Initial center of the map
 const center = {
-  lat: 33.4450601, // Latitude
-  lng: -111.9480227, // Longitude
+  lat: 33.4450601,
+  lng: -111.9480227,
 };
 
 function MyMap() {
+    const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_MAPS_API_KEY
+    });
+
+    if (!isLoaded) {
+    return <div>Loading...</div>; 
+    }
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_MAPS_API_KEY}>
-      <GoogleMap
+    <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
+        center={CURR_LOCATION.coordinates}
+        zoom={13}
         options={{mapId: "hybrid"}}
-      >
-        {/* Add a marker */}
-        <MarkerF position={center} />
-      </GoogleMap>
-    </LoadScript>
+        onClick={() => window.location.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CURR_LOCATION.address)}`}
+    >
+    <MarkerF position={CURR_LOCATION.coordinates} />
+    </GoogleMap>
   );
 }
 

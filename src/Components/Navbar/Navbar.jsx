@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <div className="relative w-full">
         {/* Navbar */}
-        <div className=" w-full flex items-center py-4 px-4 bg-black text-white border-b border-zinc-600 shadow-md shadow-zinc-700 z-10">
+        <div className=" w-full flex items-center py-4 px-4 bg-black text-white border-b border-zinc-600 shadow-sm shadow-zinc-700 z-10">
             <div className="w-full justify-between flex items-center">
             <div className="flex items-center gap-2">
                 <img src={logo} alt="logo" className="w-10 h-10" />

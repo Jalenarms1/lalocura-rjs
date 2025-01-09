@@ -20,3 +20,13 @@ export const MENU_SECTIONS = [
     {img: quesadillaImg, label: "Quesadillas", description: "Topped with chicken, beef or al pastor"},
     // {img: tortaImg, label: "Drinks", description: "Topped with chicken, beef or al pastor"}
 ]
+
+
+export const CURR_LOCATION = {
+    coordinates: {
+        lat: 33.4450601,
+        lng: -111.9480227,
+    },
+    label: "Grass Clippings Rolling Hills Golf Course",
+    address: "1415 N Mill Ave, Tempe, AZ 85288"
+}
