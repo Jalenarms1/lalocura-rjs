@@ -6,12 +6,12 @@ import { MENU_SECTIONS } from '../../data';
 const Menu = () => {
 
   return (
-    <div className="flex flex-col gap-5">
-        <p className='text-3xl border-b ml-2'>Menu</p>
+    <div className="flex flex-col gap-2">
+        <p className='text-3xl border-b border-zinc-700 ml-2'>Menu</p>
 
         <div className="grid grid-cols-1 m-2 gap-5">
-            {MENU_SECTIONS.map(({img, label, description}) => {
-                return <MenuLinkCard img={img} label={label} description={description} />
+            {MENU_SECTIONS.map(({img, label, description}, i) => {
+                return <MenuLinkCard key={i} img={img} label={label} description={description} />
 
             })}
 

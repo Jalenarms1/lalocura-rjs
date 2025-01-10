@@ -6,7 +6,7 @@ import { CURR_LOCATION } from '../../data'
 const FindUs = () => {
   return (
     <div className="flex flex-col w-full px-3">
-        <p className='text-3xl mt-2 border-b'>Find Us</p>
+        <p className='text-3xl mt-2 border-b border-zinc-700'>Find Us</p>
         <div className="w-full pt-3 rounded-md flex flex-col">
 
             <MyMap />

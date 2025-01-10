@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const MenuLinkCard = ({img, label, description}) => {
 
   return (
-    <Link to={"/menu"}>
+    <Link to={`/menu/${label.toLowerCase()}`}>
         <div className="flex gap-5">
             <img src={img} alt="hero-img" className="w-1/3 object-cover h-28 rounded-md" />
 

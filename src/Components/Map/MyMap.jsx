@@ -27,7 +27,7 @@ function MyMap() {
         center={CURR_LOCATION.coordinates}
         zoom={13}
         options={{mapId: "hybrid"}}
-        onClick={() => window.location.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CURR_LOCATION.address)}`}
+        onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CURR_LOCATION.address)}`, "_blank")}
     >
     <MarkerF position={CURR_LOCATION.coordinates} />
     </GoogleMap>

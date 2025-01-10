@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/menu' element={<MenuSection />} />
+        <Route path='/menu/:sectionType' element={<MenuSection />} />
 
       </Routes>
     </Router>
