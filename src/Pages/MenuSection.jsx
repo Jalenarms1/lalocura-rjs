@@ -6,6 +6,8 @@ import logo from "../assets/logo.jpeg"
 import { IoIosAddCircleOutline } from "react-icons/io";
 import MeatPicker from '../Components/Menu/MeatPicker';
 import ToppingPicker from '../Components/Menu/ToppingPicker';
+import { GrSubtractCircle } from "react-icons/gr";
+import DrinksPicker from '../Components/Menu/DrinksPicker';
 
 
 const MenuSection = () => {
@@ -14,6 +16,7 @@ const MenuSection = () => {
     const [selectedMeat, setSelectedMeat] = useState(MEAT_LIST[0])
     const [selectedToppings, setSelectedToppings] = useState([])
     const [specialInstructions, setSpecialInstructions] = useState("")
+    const [quantity, setQuantity] = useState(1)
 
     useEffect(() => {
         window.scrollTo(0,0)
@@ -53,34 +56,61 @@ const MenuSection = () => {
             </div>
         </div>
 
-        <div className="flex flex-col p-2 gap-5">
-            <img src={menuSection?.img} alt="section image" className='w-full object-cover h-60 rounded-md' />
-            
-            <div className="flex flex-col">
-                <p className='text-3xl font-semibold'>Build your {menuSection?.label?.slice(0, menuSection?.label.length - 1)}</p>
-                <p className='text-zinc-300'>{menuSection?.description}</p>
-            </div>
+        {sectionType == "drinks" ? (
+            <DrinksPicker />
+        ) : <div className="flex flex-col p-2 gap-5">
+                <img src={menuSection?.img} alt="section image" className='w-full object-cover h-60 rounded-md' />
+                
+                <div className="flex flex-col">
+                    <div className="flex justify-between items-center">
+                        <p className='text-3xl font-semibold'>Build your {menuSection?.label?.slice(0, menuSection?.label.length - 1)}</p>
+                        <p className='text-sm'>${menuSection?.price} ea</p>
+                    </div>
+                    <p className='text-zinc-300'>{menuSection?.description}</p>
+                </div>
 
-            <MeatPicker selectedMeat={selectedMeat} onSelect={onMeatSelect} />
-            <ToppingPicker selectedToppings={selectedToppings} onSelect={onToppingSelect} />
+                <MeatPicker selectedMeat={selectedMeat} onSelect={onMeatSelect} />
+                <ToppingPicker selectedToppings={selectedToppings} onSelect={onToppingSelect} />
 
-            <div className="flex flex-col gap-2">
-                <p className='text-2xl font-semibold'>Special Instructions</p>
-                <textarea onChange={(e) => setSpecialInstructions(e.target.value)} value={specialInstructions} rows={5} className='p-2 text-black'></textarea>
-            </div>
+                <div className="flex flex-col gap-2">
+                    <p className='text-2xl font-semibold'>Special Instructions</p>
+                    <textarea onChange={(e) => setSpecialInstructions(e.target.value)} value={specialInstructions} rows={5} className='p-2 text-black'></textarea>
+                </div>
 
-            <div className="flex flex-col">
-                <p className='font-bold text-lg'>Meat</p>
-                <p>{selectedMeat}</p>
-            </div>
+                <div className="flex flex-col gap-2">
+                    <p className='text-2xl font-semibold'>Quantity</p>
+                    <div className="flex gap-2 items-center">
+                        <p className='p-2 w-20 rounded-md bg-white text-black'>{quantity}</p>
+                        <GrSubtractCircle onClick={() => quantity > 1 ? setQuantity(quantity - 1) : null} className={`text-2xl ${quantity == 1 ? 'text-zinc-500' : ''}` }/>
+                        <IoIosAddCircleOutline onClick={() => setQuantity(quantity + 1)} className='text-3xl' />
+                    </div>
+                    {/* <input
+                        type="number"
+                        className="text-black w-fit p-2"
+                        value={quantity}
+                        // onChange={(e) => parseInt(e.target.value) ? setQuantity(Number(e.target.value)) : setQuantity("")}
+                    /> */}
+                </div>
 
-            <div className="flex flex-col">
-                <p className='font-bold text-lg'>Toppings</p>
-                <p>{selectedToppings.join(", ")}</p>
-            </div>
+                <div className="flex flex-col">
+                    <p className='font-bold text-lg'>Meat</p>
+                    <p>{selectedMeat}</p>
+                </div>
 
-            <button className='bg-orange-400 text-white font-bold p-2 rounded-full active:bg-orange-500'>ADD TO ORDER</button>
-        </div>
+                <div className="flex flex-col">
+                    <p className='font-bold text-lg'>Toppings</p>
+                    {selectedToppings.length == 0 && <p>None.</p>}
+                    <p>{selectedToppings.join(", ")}</p>
+                </div>
+
+                <div className="flex flex-col">
+                    <p className='font-bold text-lg'>Subtotal</p>
+                    <p>$ {(quantity * menuSection?.price).toFixed(2)}</p>
+                </div>
+
+            </div>}
+        
+        <button className='bg-orange-400 text-white font-bold p-2 rounded-full active:bg-orange-500'>ADD TO ORDER</button>
     </div>
   )
 }

@@ -12,11 +12,11 @@ export const CATEGORIES = [
 ]
 
 export const MENU_SECTIONS = [
-    {img: tortaImg, label: "Tortas", description: "Topped with chicken, beef, al pastor or shrimp"},
-    {img: burroImg, label: "Burritos", description: "Topped with chicken, beef, al pastor or shrimp"},
-    {img: tacosImg, label: "Tacos", description: "Topped with chicken, beef, al pastor or shrimp"},
-    {img: quesadillaImg, label: "Quesadillas", description: "Topped with chicken, beef, al pastor or shrimp"},
-    // {img: tortaImg, label: "Drinks", description: "Topped with chicken, beef, al pastor or shrimp"}
+    {img: tortaImg, label: "Tortas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99},
+    {img: burroImg, label: "Burritos", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99},
+    {img: tacosImg, label: "Tacos", description: "Topped with chicken, beef, al pastor or shrimp", price: 2.99},
+    {img: quesadillaImg, label: "Quesadillas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99},
+    {img: tortaImg, label: "Drinks", description: "Choose from a variety of ice-cold beverages"}
 ]
 
 
@@ -41,14 +41,16 @@ export const TOPPING_LIST = [
     "Monterey Jack Cheese",
     "Rice",
     "Black beans",
+    "Avacado",
     "Onion",
     "Cilantro",
     "Chipotle Aoli Sauce",
     "Guacamole Sauce"
 ]
 
-export const DRINK_LIST = [
-    "Coke",
-    "Mandarin Soda",
-    "Fanta"
-]
+
+export const DRINK_LIST = {
+    "Coke": 2.99,
+    "Mandarin Soda": 1.99,
+    "Fanta": 2.99
+}
