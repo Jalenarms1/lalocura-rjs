@@ -21,3 +21,35 @@ html, body {
           scrollbar-width: none;  /* Firefox */
     }
 }
+
+/* Keyframes for expanding height */
+@keyframes expandHeight {
+  from {
+    height: 10vh;
+  }
+  to {
+    height: 80vh;
+  }
+}
+
+/* Keyframes for collapsing height */
+@keyframes collapseHeight {
+  from {
+    height: 80vh;
+  }
+  to {
+    height: 10vh;
+  }
+}
+
+/* Applying the animation */
+.expand {
+  height: 80vh;
+  animation: expandHeight 0.5s ease-in-out forwards;
+}
+
+.collapse {
+  height: 10vh;
+  animation: collapseHeight 0.5s ease-in-out forwards;
+}
+

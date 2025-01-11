@@ -17,10 +17,10 @@ const Navbar = () => {
                 <img src={logo} alt="logo" className="w-10 h-10" />
                 <p className="font-serif text-lg font-semibold">Lalocaura Tacos Del Valle</p>
             </div>
-            <div className="relative">
+            {/* <div className="relative">
                 <FaReceipt className='text-2xl text-yellow-200' />
                 <div className="w-2 h-2 rounded-full bg-red-600 top-0 left-[5] absolute"></div>
-            </div>
+            </div> */}
             {/* <RiMenu2Fill
                 className="text-zinc-200 text-xl cursor-pointer"
                 onClick={() => setSidebarOpen(!sidebarOpen)}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { MEAT_LIST, MENU_SECTIONS } from '../data'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { DRINK_LIST, MEAT_LIST, MENU_SECTIONS } from '../data'
 import { IoIosArrowBack } from "react-icons/io";
 import logo from "../assets/logo.jpeg"
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -10,21 +10,45 @@ import { GrSubtractCircle } from "react-icons/gr";
 import DrinksPicker from '../Components/Menu/DrinksPicker';
 
 
-const MenuSection = () => {
+const MenuSection = ({order, setOrder}) => {
     const {sectionType} = useParams()
     const [menuSection, setMenuSection] = useState(null)
     const [selectedMeat, setSelectedMeat] = useState(MEAT_LIST[0])
     const [selectedToppings, setSelectedToppings] = useState([])
     const [specialInstructions, setSpecialInstructions] = useState("")
     const [quantity, setQuantity] = useState(1)
+    const navigate = useNavigate()
+    const [drinks, setDrinks] = useState(Object.keys(DRINK_LIST).reduce((acc, drink) => {
+        acc[drink] = 0
+
+        return acc
+    }, {}))
 
     useEffect(() => {
         window.scrollTo(0,0)
         document.body.classList.add("no-scrollbar")
+
     }, [])
+    
+    useEffect(() => {
+        if (menuSection?.label == "Drinks" && order.drinks.length > 0) {
+            console.log(order.drinks);
+            const drinkList = order.drinks.map(d => d.drink)
+            setDrinks(Object.keys(DRINK_LIST).reduce((acc, drink) => {
+
+                acc[drink] = drinkList.includes(drink) ? order.drinks.find(d => d.drink == drink).quantity : 0
+                return acc
+            }, {}))
+        }
+    }, [menuSection, order])
 
     useEffect(() => {
-        setMenuSection(MENU_SECTIONS.find(s => s.label.toLowerCase() == sectionType))
+        const section = MENU_SECTIONS.find(s => s.label.toLowerCase() == sectionType)
+        
+        if (sectionType != "drinks") {
+            setSelectedToppings(section.defaultToppings)
+        }
+        setMenuSection(section)
     }, [sectionType])
 
     const onMeatSelect = (meat) => {
@@ -38,6 +62,60 @@ const MenuSection = () => {
             setSelectedToppings([...selectedToppings, topping])
         }
     }
+
+    const onAddToOrder = () => {
+        if (menuSection?.label != "Drinks") {
+            console.log((quantity * menuSection?.price));
+            
+            const subTotal = parseFloat((quantity * menuSection?.price).toFixed(2))
+            const orderItemObj = {
+                id: crypto.randomUUID(),
+                quantity,
+                subTotal: subTotal,
+                itemType: menuSection?.label,
+                meat: selectedMeat,
+                toppings: selectedToppings,
+                specialInstructions
+            }
+
+            const newSubTotal = subTotal + order.subTotal
+            const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
+
+            setOrder({...order, orderItems: [...order.orderItems, orderItemObj], subTotal: newSubTotal, tax: newTax})
+            navigate("/")
+
+        } else {
+            const drinkList = Object.keys(drinks).reduce((acc, drink) => {
+                if (drinks[drink] > 0) {
+                    const drinkObj = {
+                        drink: drink,
+                        quantity: drinks[drink],
+                        subTotal: parseFloat((drinks[drink] * DRINK_LIST[drink]).toFixed(2))
+                    }
+    
+    
+                    acc.push(drinkObj)
+
+                }
+
+                return acc
+            }, [])
+
+            const newDrinkSubTotal = drinkList.reduce((acc, d) => {
+                acc += d.subTotal
+                return acc
+            }, 0)
+            // const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
+
+            const newSubTotal = newDrinkSubTotal + order.subTotal
+            const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
+
+            setOrder({...order, drinks: drinkList, subTotal: newSubTotal, tax: newTax})
+            navigate("/")
+        }
+    }
+
+
 
   return (
     <div className='min-h-screen relative bg-black w-full font-serif flex flex-col pb-20 gap-3'>
@@ -57,7 +135,7 @@ const MenuSection = () => {
         </div>
 
         {sectionType == "drinks" ? (
-            <DrinksPicker />
+            <DrinksPicker drinks={drinks} setDrinks={setDrinks} />
         ) : <div className="flex flex-col p-2 gap-5">
                 <img src={menuSection?.img} alt="section image" className='w-full object-cover h-60 rounded-md' />
                 
@@ -110,7 +188,7 @@ const MenuSection = () => {
 
             </div>}
         
-        <button className='bg-orange-400 text-white font-bold p-2 rounded-full active:bg-orange-500'>ADD TO ORDER</button>
+        <button onClick={onAddToOrder} className='bg-orange-400 text-white font-bold p-2 rounded-full active:bg-orange-500 m-3'>{menuSection?.label == "Drinks" ? "DONE" :  "ADD TO ORDER"}</button>
     </div>
   )
 }

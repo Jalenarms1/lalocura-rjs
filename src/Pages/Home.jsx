@@ -11,8 +11,9 @@ import MyMap from '../Components/Map/MyMap';
 import { LuMapPin } from "react-icons/lu";
 import { CURR_LOCATION } from '../data';
 import FindUs from '../Components/Map/FindUs';
+import CheckoutBar from '../Components/Checkout/CheckoutBar';
 
-const Home = () => {
+const Home = ({order, setOrder}) => {
 
     useEffect(() => {
         window.scrollTo(0,0)
@@ -49,18 +50,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className='fixed bottom-0 w-full bg-red-950 flex justify-between items-center p-3 px-4 '>
-        <div className="flex items-center gap-2">
-          <LuShoppingBag />
-          <p className='text-base font-semibold'>Order</p>
-
-        </div>
-
-        <div className="flex items-center gap-2">
-          <p>$50.00</p>
-          <IoIosArrowForward className='text-zinc-400' />
-        </div>
-      </div>
+      <CheckoutBar order={order} />
 
     </div>
   )

@@ -12,10 +12,10 @@ export const CATEGORIES = [
 ]
 
 export const MENU_SECTIONS = [
-    {img: tortaImg, label: "Tortas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99},
-    {img: burroImg, label: "Burritos", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99},
-    {img: tacosImg, label: "Tacos", description: "Topped with chicken, beef, al pastor or shrimp", price: 2.99},
-    {img: quesadillaImg, label: "Quesadillas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99},
+    {img: tortaImg, label: "Tortas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Cabbage", "Avacado", "Chipotle Aoli Sauce"]},
+    {img: burroImg, label: "Burritos", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Rice", "Black beans", "Monterey Jack Cheese"]},
+    {img: tacosImg, label: "Tacos", description: "Topped with chicken, beef, al pastor or shrimp", price: 2.99, defaultToppings: ["Cilantro", "Onion"]},
+    {img: quesadillaImg, label: "Quesadillas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Monterey Jack Cheese"]},
     {img: tortaImg, label: "Drinks", description: "Choose from a variety of ice-cold beverages"}
 ]
 
@@ -44,6 +44,8 @@ export const TOPPING_LIST = [
     "Avacado",
     "Onion",
     "Cilantro",
+    "Cabbage",
+    "Lettuce",
     "Chipotle Aoli Sauce",
     "Guacamole Sauce"
 ]
@@ -53,4 +55,11 @@ export const DRINK_LIST = {
     "Coke": 2.99,
     "Mandarin Soda": 1.99,
     "Fanta": 2.99
+}
+
+export const ORDER_INIT = {
+    subTotal: 0,
+    tax: 0,
+    orderItems: [],
+    drinks: []
 }

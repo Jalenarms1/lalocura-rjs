@@ -3,16 +3,18 @@ import { DRINK_LIST } from '../../data'
 import { GrSubtractCircle } from 'react-icons/gr'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 
-const DrinksPicker = () => {
-    const [drinks, setDrinks] = useState({})
+const DrinksPicker = ({drinks, setDrinks}) => {
 
-    useEffect(() => {
-        setDrinks(Object.keys(DRINK_LIST).reduce((acc, drink) => {
-            acc[drink] = 0
+    // useEffect(() => {
+    //     if (Object.keys(drinks) == 0) {
+    //         setDrinks(Object.keys(DRINK_LIST).reduce((acc, drink) => {
+    //             acc[drink] = 0
+    
+    //             return acc
+    //         }, {}))
 
-            return acc
-        }, {}))
-    }, [])
+    //     }
+    // }, [])
 
     const onAddDrink = (drink) => {
         setDrinks({...drinks, [drink]: drinks[drink] + 1})
@@ -23,8 +25,10 @@ const DrinksPicker = () => {
 
     }
 
+
+
   return (
-    <div className="flex flex-col gap-5 mb-5">
+    <div className="flex flex-col gap-5 mb-5 p-3">
         <div className="flex flex-col">
             <div className="flex justify-between items-center">
                 <p className='text-3xl font-semibold'>Drinks</p>
