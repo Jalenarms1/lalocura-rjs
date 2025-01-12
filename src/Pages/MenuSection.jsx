@@ -44,7 +44,7 @@ const MenuSection = ({order, setOrder}) => {
 
     useEffect(() => {
         const section = MENU_SECTIONS.find(s => s.label.toLowerCase() == sectionType)
-        
+
         if (sectionType != "drinks") {
             setSelectedToppings(section.defaultToppings)
         }
@@ -136,7 +136,7 @@ const MenuSection = ({order, setOrder}) => {
 
         {sectionType == "drinks" ? (
             <DrinksPicker drinks={drinks} setDrinks={setDrinks} />
-        ) : <div className="flex flex-col p-2 gap-5">
+        ) : <div className="flex flex-col p-5 gap-5">
                 <img src={menuSection?.img} alt="section image" className='w-full object-cover h-60 rounded-md' />
                 
                 <div className="flex flex-col">

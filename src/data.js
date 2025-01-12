@@ -63,3 +63,8 @@ export const ORDER_INIT = {
     orderItems: [],
     drinks: []
 }
+
+export const urls = {
+    createPaymentIntent: "https://us-central1-lalocura-3291c.cloudfunctions.net/create_pi",
+    sendEmail: "https://us-central1-lalocura-3291c.cloudfunctions.net/send_email"
+}

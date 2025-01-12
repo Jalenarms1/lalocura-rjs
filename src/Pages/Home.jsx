@@ -32,7 +32,7 @@ const Home = ({order, setOrder}) => {
       {/* <div className="bg-green-400 p-2 flex justify-center">
         <p className='text-green-900 font-semibold'>Order ahead available!</p>
       </div> */}
-      <div className="w-full relative shadow-sm shadow-zinc-600 rounded-md">
+      <div className="w-full relative rounded-md px-5 pb-1">
         <img src={heroImg} alt="hero img" className='object-cover w-full h-48 rounded-md' />
         <div className="absolute inset-0 bg-black bg-opacity-60 flex justify-center items-center">
             <p className='text-2xl font-semibold'>Order ahead now!</p>
@@ -40,7 +40,7 @@ const Home = ({order, setOrder}) => {
       </div>
 
 
-      <div className='flex flex-col items-center gap-8'>
+      <div className='flex flex-col items-center gap-8 p-5'>
         <Menu />
 
         <FindUs />
@@ -50,7 +50,7 @@ const Home = ({order, setOrder}) => {
         </div>
       </div>
 
-      <CheckoutBar order={order} />
+      <CheckoutBar order={order} setOrder={setOrder} />
 
     </div>
   )
