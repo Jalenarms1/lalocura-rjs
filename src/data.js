@@ -66,5 +66,17 @@ export const ORDER_INIT = {
 
 export const urls = {
     createPaymentIntent: "https://us-central1-lalocura-3291c.cloudfunctions.net/create_pi",
-    sendEmail: "https://us-central1-lalocura-3291c.cloudfunctions.net/send_email"
+    createOrder: "https://us-central1-lalocura-3291c.cloudfunctions.net/create_order"
+}
+
+export const timestampToTime = (timestamp) => {
+    const date = new Date(timestamp)
+
+    let hours = date.getHours()
+    const minutes = date.getMinutes().toString().padEnd(2, "0") 
+    const ampm = hours >= 12 ? "PM" : "AM"
+
+    hours = hours % 12 || 12
+
+    return `${hours}:${minutes} ${ampm}`
 }

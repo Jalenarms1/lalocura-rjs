@@ -40,10 +40,10 @@ const CheckoutBar = ({order, setOrder}) => {
         isValid = false
     }
 
-    if (phone.length !== 10 || isNaN(phone)) {
-        errors.phone = "Please enter a valid phone number"
-        isValid = false
-    }
+    // if (phone.length !== 10 || isNaN(phone)) {
+    //     errors.phone = "Please enter a valid phone number"
+    //     isValid = false
+    // }
 
     const card = elements.getElement("card")
 
@@ -104,18 +104,34 @@ const CheckoutBar = ({order, setOrder}) => {
         
     } else {
         setPaymentStatus(paymentResp.paymentIntent.status)
+       
+        if (paymentResp.paymentIntent.status == "succeeded") {
+            const orderObj = {
+                ...order,
+                id: crypto.randomUUID(),
+                orderCID: crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase(),
+                intentId: paymentResp.paymentIntent.id,
+                createdAt: paymentResp.paymentIntent.created,
+                customerName: name,
+                customerEmail: email
+            }
+
+            setOrder(ORDER_INIT)
+
+            fetch(urls.createOrder, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${import.meta.env.VITE_FB_API_KEY}`
+                },
+                body: JSON.stringify(orderObj)
         
+            })
+        }
     }
 
     setIsProcessing(false)
-    setOrder(ORDER_INIT)
 
-    fetch(urls.sendEmail, {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${import.meta.env.VITE_FB_API_KEY}`
-        }
-    })
     
   }
 
@@ -133,7 +149,7 @@ const CheckoutBar = ({order, setOrder}) => {
   return (
     <div className={`fixed bottom-0 w-full duration- ease-in-out overflow-y-auto overflow-x-hidden ${
         openCheckout ? "expand rounded-tl-md rounded-tr-md" : order.orderItems.length > 0 ? "h-[7vh]" : "hidden"
-      } bg-red-950 flex justify-between items-center p-3 px-4`}>
+      } bg-red-950 flex justify-between items-center px-4`}>
         {!openCheckout ? <div onClick={() => !openCheckout ? setOpenCheckout(true) : null} className='flex justify-between w-full'>
             <div className="flex items-center gap-2">
             <LuShoppingBag />
@@ -146,8 +162,8 @@ const CheckoutBar = ({order, setOrder}) => {
             <IoIosArrowForward className='text-zinc-400' />
             </div>
         </div> : (
-            <div className=" h-full overflow-y-auto overflow-x-hidden no-scrollbar w-full flex flex-col py-2 gap-2">
-                <div className="w-full flex justify-end">
+            <div className=" h-full overflow-y-auto overflow-x-hidden no-scrollbar w-full flex flex-col gap-2 relative pb-10">
+                <div className="w-full flex justify-end sticky top-0 bg-red-950 py-2 shadow-sm shadow-zinc-800">
                     {/* <p>hello</p> */}
                     <MdRestaurantMenu onClick={() => setOpenCheckout(false)} className='text-3xl cursor-pointer active:text-zinc-200' />
 
@@ -202,7 +218,7 @@ const CheckoutBar = ({order, setOrder}) => {
 
                             <div className="w-full flex justify-between">
                                 <p className='font-semibold'>Total:</p>
-                                <p>$ {(localOrder.subTotal + order.tax).toFixed(2)}</p>
+                                <p>$ {(localOrder.subTotal + localOrder.tax).toFixed(2)}</p>
                             </div>
 
                         </div>
@@ -213,18 +229,18 @@ const CheckoutBar = ({order, setOrder}) => {
                             <p className='w-full text-2xl font-semibold'>Contact Information</p>
                             <div className="w-full flex flex-col gap-1">
                                 <p className='font-semibold'>Name</p>
-                                {paymentStatus != "succeeded" ? <input value={name} onChange={(e) => setName(e.target.value)} type="text" className='p-1 text-black' placeholder='Name' /> : <p>{name}</p>}
+                                {paymentStatus != "succeeded" ? <input value={name} onChange={(e) => setName(e.target.value)} type="text" className='p-1 text-black rounded-sm' placeholder='Name' /> : <p>{name}</p>}
                                 {customerInfoError.name != "" && <p className='text-red-500'>{customerInfoError.name}</p>}
                             </div>
 
                             <div className="w-full flex flex-col gap-1">
                                 <p className='font-semibold'>Email</p>
-                                {paymentStatus != "succeeded" ? <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className='p-1 text-black' placeholder='Email' /> : <p>{email}</p>}
+                                {paymentStatus != "succeeded" ? <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className='p-1 rounded-sm text-black' placeholder='Email' /> : <p>{email}</p>}
                                 {customerInfoError.email != "" && <p className='text-red-500'>{customerInfoError.email}</p>}
 
                             </div>
 
-                            <div className="w-full flex flex-col gap-1">
+                            {/* <div className="w-full flex flex-col gap-1">
                                 <p className='font-semibold'>Phone Number</p>
                                 {paymentStatus != "succeeded" ? <input value={phone} onKeyDown={(e) => {
                                     if (e.key == "Backspace" && phone.length > 0) {
@@ -234,7 +250,7 @@ const CheckoutBar = ({order, setOrder}) => {
                                 }} onChange={(e) => parseInt(e.target.value) ? setPhone(e.target.value) : null} type="text" className='p-1 text-black' placeholder='Phone Number' /> : <p>{phone}</p>}
                                 {customerInfoError.phone != "" && <p className='text-red-500'>{customerInfoError.phone}</p>}
 
-                            </div>
+                            </div> */}
 
                         </div>
                         
@@ -242,7 +258,7 @@ const CheckoutBar = ({order, setOrder}) => {
                             <>
                                 <p className='w-full text-2xl font-semibold'>Payment Information</p>
                                 <div className="w-full">
-                                    <CardElement className='text-black bg-white p-2 rounded-md'/>
+                                    <CardElement className='text-black bg-white p-2 rounded-sm'/>
                                 </div>
                                 {customerInfoError.card != "" && <p className='text-red-500 w-full'>{customerInfoError.card}</p>}
 
@@ -254,10 +270,16 @@ const CheckoutBar = ({order, setOrder}) => {
                                 {!isProcessing ? <p>PAY NOW</p> : <VscLoading className='animate-spin' />}
                             </button>
                         </div> : (
-                            <div className='w-full text-white p-1 rounded-md flex justify-center items-center gap-2 font-sans'>
-                                <FaCheckCircle  className='text-green-500'/>
-                                <p className='text-green-500'>{paymentStatus.toUpperCase()}</p>
-                                
+                            <div className="flex flex-col gap-5">
+                                <div className='w-full text-white p-1 rounded-md flex justify-center items-center gap-2 font-sans'>
+                                    <FaCheckCircle  className='text-green-500'/>
+                                    <p className='text-green-500'>{paymentStatus.toUpperCase()}</p>
+                                    
+                                </div>
+
+                                <div>
+                                    <p className='text-sm'>Your order has been succesfully placed. You will recieve an email when your order has been confirmed</p>
+                                </div>
                             </div>
                         )}
                     </div>
