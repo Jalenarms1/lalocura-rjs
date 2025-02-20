@@ -198,7 +198,7 @@ const MenuSection = ({order, setOrder}) => {
                 
                 <div className="flex flex-col">
                     <div className="flex justify-between items-center">
-                        <p className='text-3xl font-semibold'>Build your {menuSection?.label?.slice(0, menuSection?.label.length - 1)}</p>
+                        <p className='text-2xl font-semibold'>Build your {menuSection?.label?.slice(0, menuSection?.label.length - 1)}</p>
                         <p className='text-sm'>${menuSection?.price} ea</p>
                     </div>
                     <p className='text-zinc-300'>{menuSection?.description}</p>
