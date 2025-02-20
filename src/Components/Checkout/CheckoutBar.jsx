@@ -7,6 +7,7 @@ import { CardElement } from '@stripe/react-stripe-js'
 import { ORDER_INIT, urls } from '../../data'
 import { FaCheckCircle } from "react-icons/fa";
 import { VscLoading } from "react-icons/vsc";
+import { Link } from 'react-router-dom'
 
 
 
@@ -109,11 +110,11 @@ const CheckoutBar = ({order, setOrder}) => {
             const orderObj = {
                 ...order,
                 id: crypto.randomUUID(),
-                orderCID: crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase(),
                 intentId: paymentResp.paymentIntent.id,
-                createdAt: paymentResp.paymentIntent.created,
+                createdAt: Date.now(),
                 customerName: name,
-                customerEmail: email
+                customerEmail: email,
+                orderStatus: "pending"
             }
 
             setOrder(ORDER_INIT)
@@ -175,19 +176,22 @@ const CheckoutBar = ({order, setOrder}) => {
 
                 <div className="flex flex-col gap-2">
                     {localOrder.orderItems.map((oi) => (
-                        <div className="flex border-b border-dashed border-zinc-500 flex-col">
-                            <div className="flex justify-between w-full items-center">
-                                <div className="flex items-center gap-2">
-                                    <p className='text-lg'>{oi.itemType.slice(0, -1)}(s)</p>
-                                    <p>{oi.quantity}x</p>
+                        <Link to={`/menu/${oi.itemType.toLowerCase()}/${oi.id}`}>
+                            <div className="flex border-b border-dashed border-zinc-500 flex-col">
+                                <div className="flex justify-between w-full items-center">
+                                    <div className="flex items-center gap-2">
+                                        <p className='text-lg'>{oi.itemType.slice(0, -1)}(s)</p>
+                                        <p>{oi.quantity}x</p>
+                                    </div>
+                                    <p className='text-sm'>{oi.subTotal}</p>
                                 </div>
-                                <p className='text-sm'>{oi.subTotal}</p>
+                                <div className='flex gap-2'>
+                                    <p className='text-sm text-zinc-300'>{[oi.meat, ...oi.toppings].join(", ")}</p>
+                                    
+                                </div>
                             </div>
-                            <div className='flex gap-2'>
-                                <p className='text-sm text-zinc-300'>{[oi.meat, ...oi.toppings].join(", ")}</p>
-                                
-                            </div>
-                        </div>
+                        
+                        </Link>
                     ))}
                     {localOrder.drinks.map((drink) => (
                         <>

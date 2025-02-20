@@ -11,7 +11,7 @@ import DrinksPicker from '../Components/Menu/DrinksPicker';
 
 
 const MenuSection = ({order, setOrder}) => {
-    const {sectionType} = useParams()
+    const {sectionType, existingItemId} = useParams()
     const [menuSection, setMenuSection] = useState(null)
     const [selectedMeat, setSelectedMeat] = useState(MEAT_LIST[0])
     const [selectedToppings, setSelectedToppings] = useState([])
@@ -29,6 +29,19 @@ const MenuSection = ({order, setOrder}) => {
         document.body.classList.add("no-scrollbar")
 
     }, [])
+
+    useEffect(() => {
+        if (existingItemId) {
+            const item = order.orderItems.find(i => i.id == existingItemId)
+            console.log(item.toppings);
+
+            setSelectedMeat(item.meat)
+            setSpecialInstructions(item.specialInstructions)
+            setQuantity(item.quantity)
+            setSelectedToppings([...item.toppings])
+            
+        }
+    }, [existingItemId])
     
     useEffect(() => {
         if (menuSection?.label == "Drinks" && order.drinks.length > 0) {
@@ -49,7 +62,8 @@ const MenuSection = ({order, setOrder}) => {
             setSelectedToppings(section.defaultToppings)
         }
         setMenuSection(section)
-    }, [sectionType])
+
+    }, [sectionType, existingItemId])
 
     const onMeatSelect = (meat) => {
         setSelectedMeat(meat)
@@ -68,20 +82,63 @@ const MenuSection = ({order, setOrder}) => {
             console.log((quantity * menuSection?.price));
             
             const subTotal = parseFloat((quantity * menuSection?.price).toFixed(2))
-            const orderItemObj = {
-                id: crypto.randomUUID(),
-                quantity,
-                subTotal: subTotal,
-                itemType: menuSection?.label,
-                meat: selectedMeat,
-                toppings: selectedToppings,
-                specialInstructions
+
+            if (existingItemId) {
+                const currOrderSubtotalWOutItem = order.orderItems.reduce((acc, obj) => {
+                    console.log(obj);
+                    
+                    if (obj.id != existingItemId) {
+                        acc += obj.subTotal
+                    }
+
+                    return acc
+
+                }, 0)
+                console.log(currOrderSubtotalWOutItem);
+                
+
+                const newSubT = currOrderSubtotalWOutItem + subTotal
+                const newTax = parseFloat((newSubT * 1.08 - newSubT).toFixed(2))
+                setOrder({
+                    ...order,
+                    subTotal: newSubT,
+                    tax: newTax,
+                    orderItems: order.orderItems.map(oi => {
+                        if (oi.id != existingItemId) {
+                            return oi
+                        }
+
+                        const orderItemObj = {
+                            id: existingItemId,
+                            quantity,
+                            subTotal: subTotal,
+                            itemType: menuSection?.label,
+                            meat: selectedMeat,
+                            toppings: selectedToppings,
+                            specialInstructions
+                        }
+
+                        return orderItemObj
+                    })
+                })
+            } else {
+                const orderItemObj = {
+                    id: crypto.randomUUID(),
+                    quantity,
+                    subTotal: subTotal,
+                    itemType: menuSection?.label,
+                    meat: selectedMeat,
+                    toppings: selectedToppings,
+                    specialInstructions
+                }
+    
+                const newSubTotal = subTotal + order.subTotal
+                const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
+    
+                setOrder({...order, orderItems: [...order.orderItems, orderItemObj], subTotal: newSubTotal, tax: newTax})
+
             }
 
-            const newSubTotal = subTotal + order.subTotal
-            const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
-
-            setOrder({...order, orderItems: [...order.orderItems, orderItemObj], subTotal: newSubTotal, tax: newTax})
             navigate("/")
 
         } else {
@@ -188,7 +245,7 @@ const MenuSection = ({order, setOrder}) => {
 
             </div>}
         
-        <button onClick={onAddToOrder} className='bg-orange-400 text-white font-bold p-2 rounded-full active:bg-orange-500 m-3'>{menuSection?.label == "Drinks" ? "DONE" :  "ADD TO ORDER"}</button>
+        <button onClick={onAddToOrder} className='bg-orange-400 text-white font-bold p-2 rounded-full active:bg-orange-500 m-3'>{(menuSection?.label == "Drinks" || existingItemId) ? "SAVE" :  "ADD TO ORDER"}</button>
     </div>
   )
 }

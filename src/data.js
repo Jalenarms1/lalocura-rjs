@@ -2,6 +2,8 @@ import tortaImg from './assets/hero-torta.jpeg'
 import tacosImg from './assets/tacosimg.jpeg'
 import burroImg from './assets/burroimg.jpeg'
 import quesadillaImg from './assets/quesadillaimg.jpg'
+import { DateTime } from 'luxon';
+
 
 export const CATEGORIES = [
     "Tacos",
@@ -66,17 +68,14 @@ export const ORDER_INIT = {
 
 export const urls = {
     createPaymentIntent: "https://us-central1-lalocura-3291c.cloudfunctions.net/create_pi",
-    createOrder: "https://us-central1-lalocura-3291c.cloudfunctions.net/create_order"
+    createOrder: "https://us-central1-lalocura-3291c.cloudfunctions.net/create_order",
+    getOrders: "https://us-central1-lalocura-3291c.cloudfunctions.net/get_orders"
+
 }
 
-export const timestampToTime = (timestamp) => {
-    const date = new Date(timestamp)
+export const timestampToArizonaTime = (timestamp) => {
+    const arizonaTime = DateTime.fromMillis(timestamp, { zone: 'utc' })
+        .setZone('America/Phoenix');
 
-    let hours = date.getHours()
-    const minutes = date.getMinutes().toString().padEnd(2, "0") 
-    const ampm = hours >= 12 ? "PM" : "AM"
-
-    hours = hours % 12 || 12
-
-    return `${hours}:${minutes} ${ampm}`
-}
+    return arizonaTime.toFormat('hh:mm a');
+};
