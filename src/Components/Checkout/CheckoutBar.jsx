@@ -11,8 +11,7 @@ import { Link } from 'react-router-dom'
 
 
 
-const CheckoutBar = ({order, setOrder}) => {
-  const [openCheckout, setOpenCheckout] = useState(false)
+const CheckoutBar = ({order, setOrder, openCheckout, setOpenCheckout}) => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")

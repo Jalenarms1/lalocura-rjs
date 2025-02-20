@@ -187,7 +187,7 @@ const MenuSection = ({order, setOrder}) => {
             <div><p className='text-lg font-semibold'>{menuSection?.label}</p></div>
 
             <div>
-                <IoIosAddCircleOutline className='text-3xl' />
+                <IoIosAddCircleOutline className='text-3xl text-black' />
             </div>
         </div>
 
