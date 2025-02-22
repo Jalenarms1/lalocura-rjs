@@ -1,10 +1,8 @@
-import { useElements, useStripe } from '@stripe/react-stripe-js'
 import React, { useEffect, useState } from 'react'
 import { IoIosArrowForward } from 'react-icons/io'
 import { LuShoppingBag } from 'react-icons/lu'
 import { MdRestaurantMenu } from 'react-icons/md'
-import { CardElement } from '@stripe/react-stripe-js'
-import { ORDER_INIT, urls } from '../../data'
+import { MENU_SECTIONS, ORDER_INIT, urls } from '../../data'
 import { FaCheckCircle } from "react-icons/fa";
 import { VscLoading } from "react-icons/vsc";
 import { Link } from 'react-router-dom'
@@ -22,8 +20,6 @@ const CheckoutBar = ({order, setOrder, openCheckout, setOpenCheckout}) => {
   const [localOrder, setLocalOrder] = useState(ORDER_INIT)
 
 
-  const stripe = useStripe()
-  const elements = useElements()
 
   const isValidCustomer = () => {
     const errors = { name: "", email: "", phone: "", card: ""}
@@ -199,6 +195,40 @@ const CheckoutBar = ({order, setOrder, openCheckout, setOpenCheckout}) => {
     }
   }
 
+  const placeOrder = async () => {
+    const resp = await fetch("http://localhost:5544/create-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            subTotal: parseInt(order.subTotal * 100),
+            tax: parseInt(order.tax * 100),
+            orderItems: order.orderItems.map(oi => {
+                return {
+                    ...oi,
+                    subTotal: parseInt(oi.subTotal * 100),
+                    itemImg: MENU_SECTIONS.find(s => s.label == oi.itemType).img
+                }
+            }),
+            drinks: order.drinks.map(d => {
+                return {
+                    ...d,
+                    subTotal: parseInt(d.subTotal * 100)
+                }
+            })
+        })
+    })    
+
+    const data = await resp.json()
+
+    console.log(data);
+    if (data.sessionUrl) {
+        window.location.href = data.sessionUrl
+    }
+    
+  }
+
 
   useEffect(() => {
     setPaymentError("")
@@ -215,7 +245,7 @@ const CheckoutBar = ({order, setOrder, openCheckout, setOpenCheckout}) => {
         openCheckout ? "expand rounded-tl-md rounded-tr-md" : order.orderItems.length > 0 ? "h-[7vh]" : "hidden"
       } bg-red-950 flex justify-between items-center`}>
         {openCheckout && <div className=' w-full fixed bottom-5  z-[2]'>
-            <button className='bg-green-900 active:bg-green-700 w-[95vw] mx-2 p-3 rounded-md font-semibold text-lg'>Place Order</button>
+            <button onClick={placeOrder} className='bg-green-900 active:bg-green-700 w-[95vw] mx-2 p-3 rounded-md font-semibold text-lg'>Place Order</button>
 
         </div>}
         {!openCheckout ? <div onClick={() => !openCheckout ? setOpenCheckout(true) : null} className='flex justify-between w-full mx-4'>
@@ -282,7 +312,7 @@ const CheckoutBar = ({order, setOrder, openCheckout, setOpenCheckout}) => {
                         <div className="flex flex-col w-1/2 gap-2">
                             <div className="w-full flex justify-between">
                                 <p className='font-semibold'>Subtotal:</p>
-                                <p>$ {localOrder.subTotal.toFixed(2)}</p>
+                                <p>$ {parseFloat(localOrder.subTotal.toFixed(2))}</p>
                             </div>
 
                             <div className="w-full flex justify-between">

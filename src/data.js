@@ -14,11 +14,11 @@ export const CATEGORIES = [
 ]
 
 export const MENU_SECTIONS = [
-    {img: tortaImg, label: "Tortas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Cabbage", "Avacado", "Chipotle Aoli Sauce"]},
-    {img: burroImg, label: "Burritos", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Rice", "Black beans", "Monterey Jack Cheese"]},
-    {img: tacosImg, label: "Tacos", description: "Topped with chicken, beef, al pastor or shrimp", price: 2.99, defaultToppings: ["Cilantro", "Onion"]},
-    {img: quesadillaImg, label: "Quesadillas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Monterey Jack Cheese"]},
-    {img: tortaImg, label: "Drinks", description: "Choose from a variety of ice-cold beverages"}
+    {img: "https://firebasestorage.googleapis.com/v0/b/lalocura-3291c.firebasestorage.app/o/hero-torta.jpeg?alt=media&token=9c77fae3-9bb4-49fe-886e-ecc8e395303c", label: "Tortas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Cabbage", "Avacado", "Chipotle Aoli Sauce"]},
+    {img: "https://firebasestorage.googleapis.com/v0/b/lalocura-3291c.firebasestorage.app/o/burroimg.jpeg?alt=media&token=97688208-94fd-4d8b-b8db-41060e341155", label: "Burritos", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Rice", "Black beans", "Monterey Jack Cheese"]},
+    {img: "https://firebasestorage.googleapis.com/v0/b/lalocura-3291c.firebasestorage.app/o/tacosimg.jpeg?alt=media&token=167211d6-ab03-41b7-b6a8-9324441739a4", label: "Tacos", description: "Topped with chicken, beef, al pastor or shrimp", price: 2.99, defaultToppings: ["Cilantro", "Onion"]},
+    {img: "https://firebasestorage.googleapis.com/v0/b/lalocura-3291c.firebasestorage.app/o/quesadillaimg.jpg?alt=media&token=d6719691-8549-498c-a084-c04d585e9f0e", label: "Quesadillas", description: "Topped with chicken, beef, al pastor or shrimp", price: 9.99, defaultToppings: ["Monterey Jack Cheese"]},
+    {img: "", label: "Drinks", description: "Choose from a variety of ice-cold beverages"}
 ]
 
 

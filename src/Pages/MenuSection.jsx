@@ -98,7 +98,7 @@ const MenuSection = ({order, setOrder}) => {
                 
 
                 const newSubT = currOrderSubtotalWOutItem + subTotal
-                const newTax = parseFloat((newSubT * 1.08 - newSubT).toFixed(2))
+                const newTax = parseFloat((newSubT * .08).toFixed(2))
                 setOrder({
                     ...order,
                     subTotal: newSubT,
@@ -133,7 +133,7 @@ const MenuSection = ({order, setOrder}) => {
                 }
     
                 const newSubTotal = subTotal + order.subTotal
-                const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
+                const newTax = parseFloat((newSubTotal * 0.08).toFixed(2))
     
                 setOrder({...order, orderItems: [...order.orderItems, orderItemObj], subTotal: newSubTotal, tax: newTax})
 
@@ -147,28 +147,38 @@ const MenuSection = ({order, setOrder}) => {
                     const drinkObj = {
                         drink: drink,
                         quantity: drinks[drink],
-                        subTotal: parseFloat((drinks[drink] * DRINK_LIST[drink]).toFixed(2))
-                    }
-    
-    
-                    acc.push(drinkObj)
-
+                        subTotal: parseFloat((drinks[drink] * DRINK_LIST[drink]).toFixed(2)) // Ensure correct decimal rounding
+                    };
+                    acc.push(drinkObj);
                 }
+                return acc;
+            }, []);
+            
+            const newDrinkSubTotal = drinkList.reduce((acc, d) => acc + d.subTotal, 0);
+            
+            const newSubTotal = order.orderItems.reduce((acc, obj) => { 
+                acc += obj.subTotal
+
 
                 return acc
-            }, [])
+            }, 0) + newDrinkSubTotal
+            
+            const newTax = parseFloat((newSubTotal * 0.08).toFixed(2));
+            console.log(order.subTotal);
+            
+            console.log("subtotal: ", newSubTotal);
+            console.log("tax: ", newTax);
 
-            const newDrinkSubTotal = drinkList.reduce((acc, d) => {
-                acc += d.subTotal
-                return acc
-            }, 0)
-            // const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
 
-            const newSubTotal = newDrinkSubTotal + order.subTotal
-            const newTax = parseFloat((newSubTotal * 1.08 - newSubTotal).toFixed(2))
-
-            setOrder({...order, drinks: drinkList, subTotal: newSubTotal, tax: newTax})
-            navigate("/")
+            
+            setOrder({
+                ...order,
+                drinks: drinkList,
+                subTotal: newSubTotal,
+                tax: newTax
+            });
+            
+            navigate("/");
         }
     }
 
@@ -209,7 +219,7 @@ const MenuSection = ({order, setOrder}) => {
 
                 <div className="flex flex-col gap-2">
                     <p className='text-2xl font-semibold'>Special Instructions</p>
-                    <textarea onChange={(e) => setSpecialInstructions(e.target.value)} value={specialInstructions} rows={5} className='p-2 text-black'></textarea>
+                    <textarea onChange={(e) => setSpecialInstructions(e.target.value)} value={specialInstructions} rows={5} className='p-2 text-black bg-white'></textarea>
                 </div>
 
                 <div className="flex flex-col gap-2">

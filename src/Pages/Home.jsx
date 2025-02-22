@@ -7,10 +7,8 @@ import heroImg from '../assets/hero-img.jpeg'
 import heroTacosImg from '../assets/hero-tacos.jpeg'
 import heroBurro from '../assets/hero-burro.jpeg'
 import breakfastImg from '../assets/breakfastimg.jpeg'
-import MyMap from '../Components/Map/MyMap';
 import { LuMapPin } from "react-icons/lu";
 import { CURR_LOCATION } from '../data';
-import FindUs from '../Components/Map/FindUs';
 import CheckoutBar from '../Components/Checkout/CheckoutBar';
 
 const Home = ({order, setOrder}) => {
@@ -18,6 +16,8 @@ const Home = ({order, setOrder}) => {
 
 
   useEffect(() => {
+    console.log("Hello");
+    
       window.scrollTo(0,0)
   }, [])
 
@@ -35,7 +35,7 @@ const Home = ({order, setOrder}) => {
       <div className='flex flex-col items-center gap-8 '>
         <Menu />
 
-        <FindUs />
+        {/* <FindUs />
 
         {/* <div className="flex flex-col gap-5 w-full">
           <p className='text-3xl border-b ml-2'>Hours</p>

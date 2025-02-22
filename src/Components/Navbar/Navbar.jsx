@@ -3,12 +3,10 @@ import { RiMenu2Fill } from 'react-icons/ri'
 import logo from '../../assets/logo.jpeg'
 import SidebarView from './SidebarView'
 import { FaReceipt } from "react-icons/fa";
-import { SignOutButton, useUser } from '@clerk/clerk-react';
 
 
 const Navbar = ({isAdminView = false, setOpenCheckout, order}) => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const {isSignedIn, user} = useUser()
 
   return (
     <div className="w-full sticky top-0 z-10">
@@ -18,7 +16,6 @@ const Navbar = ({isAdminView = false, setOpenCheckout, order}) => {
                 <img src={logo} alt="logo" className="w-10 h-10" />
                 <p className="font-serif text-lg font-semibold">Lalocaura Tacos Del Valle</p>
             </div>
-            {(isSignedIn && isAdminView) ? <SignOutButton redirectUrl='/admin' /> : null}
             {order.orderItems.length > 0 && <div onClick={() => setOpenCheckout(true)} className="relative">
                 <FaReceipt className='text-2xl text-yellow-200' />
                 <div className="w-2 h-2 rounded-full bg-red-600 top-0 left-[5] absolute"></div>
