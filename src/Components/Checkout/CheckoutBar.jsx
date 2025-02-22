@@ -196,7 +196,7 @@ const CheckoutBar = ({order, setOrder, openCheckout, setOpenCheckout}) => {
   }
 
   const placeOrder = async () => {
-    const resp = await fetch(import.meta.env.VITE_API_DOMAIN + "/create-order", {
+    const resp = await fetch(import.meta.env.VITE_API_ROOT + "/create-order", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
